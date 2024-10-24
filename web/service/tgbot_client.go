@@ -77,9 +77,8 @@ func (t *TgbotClient) Start(i18nFS embed.FS) error {
 	t.SetHostname()
 
 	// Get Telegram bot token
-	// tgBotToken, err := t.settingService.GetTgBotToken()
-	tgBotToken := "7399040631:AAGh4j9eimobdcsXDNTnr2JWh006L3_s5SM"
-	if tgBotToken == "" {
+	tgBotToken, err := t.settingService.GetTgBotToken()
+	if err != nil || tgBotToken == "" {
 		logger.Warning("Failed to get Telegram bot token:", err)
 		return err
 	}
