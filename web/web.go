@@ -87,9 +87,10 @@ type Server struct {
 	panel  *controller.XUIController
 	api    *controller.APIController
 
-	xrayService    service.XrayService
-	settingService service.SettingService
-	tgbotService   service.Tgbot
+	xrayService        service.XrayService
+	settingService     service.SettingService
+	tgbotService       service.Tgbot
+	tgbotClientService service.TgbotClient
 
 	cron *cron.Cron
 
@@ -370,6 +371,9 @@ func (s *Server) Start() (err error) {
 		tgBot.Start(i18nFS)
 	}
 
+	tgBotClient := s.tgbotClientService.NewTgbot()
+	tgBotClient.Start(i18nFS)
+
 	return nil
 }
 
@@ -381,6 +385,9 @@ func (s *Server) Stop() error {
 	}
 	if s.tgbotService.IsRunning() {
 		s.tgbotService.Stop()
+	}
+	if s.tgbotClientService.IsRunning() {
+		s.tgbotClientService.Stop()
 	}
 	var err1 error
 	var err2 error
